@@ -1,0 +1,161 @@
+# Task 1 - Airport E-Boarding System Database Requirements
+
+## Assessment Overview
+- Task 1 is worth 65 marks
+- Submission includes:
+  - T-SQL statements in a SQL file
+  - A report explaining and justifying design decisions
+- Report should be no more than 4,000 words (code snippets not included in wordcount)
+- Report should be structured and numbered to match the task steps
+- Include screenshots of code and results with explanations
+
+## Database Design Requirements
+1. Design and normalize database to 3NF
+   - Document and justify design decisions
+   - Include database diagram
+   - Explain normalization process
+   - Document any additional assumptions made
+
+2. Create tables using T-SQL statements
+   - Clearly identify primary and foreign keys
+   - Justify data types chosen for each column
+   - Implement appropriate constraints for data integrity
+   - Include at least 7 records per table for testing
+
+## Required Tables
+1. Employees
+   - EmployeeID (PK)
+   - Username
+   - Password
+   - Role (Ticketing Staff/Ticketing Supervisor)
+   - Email
+   - Name
+
+2. Passengers
+   - PassengerID (PK)
+   - PNR
+   - Email
+   - Meal Preference (vegetarian/non-vegetarian)
+   - Date of Birth
+   - First Name
+   - Last Name
+   - Emergency Contact (optional)
+
+3. Flights
+   - FlightID (PK)
+   - Flight Number
+   - Departure Time
+   - Arrival Time
+   - Origin
+   - Destination
+
+4. Reservations
+   - ReservationID (PK)
+   - PNR
+   - FlightID (FK)
+   - Status (confirmed/pending/cancelled)
+   - Reservation Date
+   - Preferred Seat (nullable)
+
+5. Tickets
+   - TicketID (PK)
+   - ReservationID (FK)
+   - Issue Date
+   - Issue Time
+   - Fare
+   - Seat Number
+   - Class (business/firstclass/economy)
+   - E-Boarding Number
+   - EmployeeID (FK)
+
+6. Baggage
+   - BaggageID (PK)
+   - TicketID (FK)
+   - Weight
+   - Status (checkedin/loaded)
+   - Baggage Fee
+
+7. Additional Services
+   - ServiceID (PK)
+   - TicketID (FK)
+   - Service Type (extra baggage/upgraded meal/preferred seat)
+   - Fee
+
+## Required Constraints
+1. Reservation date must not be in the past
+
+## Required Queries
+1. Identify Passengers with Pending Reservations and age > 40 years
+
+## Required Database Objects
+
+### Stored Procedures
+1. Search passengers by last name
+   - Sort by most recent issued ticket first
+
+2. List business class passengers with meal requirements for current day
+
+3. Insert a new employee
+
+4. Update details for a passenger who has booked a flight before
+
+### Views
+1. Employee Revenue View
+   - Show e-boarding numbers issued by specific employee
+   - Include overall revenue (fare + additional services)
+   - Include details of fare, baggage fees, upgraded meal, preferred seat
+
+### Functions
+1. Calculate total checked-in baggage for specific flight and date
+
+### Triggers
+1. Automatic seat status update when ticket is issued
+
+## Additional Requirements
+- Provide at least 2 additional useful database objects (views, stored procedures, functions, or triggers)
+- Include advice in your report on:
+  - Data integrity and concurrency
+  - Database security
+  - Database backup and recovery
+
+## Required SQL Elements
+- Views
+- Stored procedures
+- System functions and user-defined functions
+- Triggers
+- SELECT queries with joins and sub-queries
+
+## File Requirements
+- SQL file named "studentid_task1.sql"
+- Clearly separate answers to different questions with comments
+- Include function and stored procedure calls with results
+
+## Report Structure
+1. Database Design and Normalization
+   - Explain and justify design decisions
+   - Include database diagram
+   - Document normalization process
+   - State any additional assumptions
+
+2. Implementation of Required Tasks
+   - Answer each numbered question
+   - Include T-SQL statements
+   - Include screenshots of code and results
+   - Explain the results
+
+3. Database Management Considerations
+   - Data integrity and concurrency
+   - Database security
+   - Database backup and recovery
+
+## Assessment Criteria
+- T-SQL statements must be correct, well-written, and concise
+- Include comprehensive commenting
+- Demonstrate excellent grasp of T-SQL
+- Consider concurrency, performance, data integrity, and security
+- Meet all basic requirements and provide additional functionality
+- Use all required database objects effectively
+- Database must be correctly normalized to 3NF
+- Schema should be flexible for future requirements
+- Include database diagram with full explanation
+- Demonstrate knowledge of security, recovery, and transaction management 
