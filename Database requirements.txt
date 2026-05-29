@@ -1,13 +1,4 @@
-# Task 1 - Airport E-Boarding System Database Requirements
-
-## Assessment Overview
-- Task 1 is worth 65 marks
-- Submission includes:
-  - T-SQL statements in a SQL file
-  - A report explaining and justifying design decisions
-- Report should be no more than 4,000 words (code snippets not included in wordcount)
-- Report should be structured and numbered to match the task steps
-- Include screenshots of code and results with explanations
+# Airport E-Boarding System Database Requirements
 
 ## Database Design Requirements
 1. Design and normalize database to 3NF
