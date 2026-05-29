@@ -104,7 +104,7 @@
 
 ## Additional Requirements
 - Provide at least 2 additional useful database objects (views, stored procedures, functions, or triggers)
-- Include advice in your report on:
+- Document operational guidance for:
   - Data integrity and concurrency
   - Database security
   - Database backup and recovery
@@ -116,37 +116,7 @@
 - Triggers
 - SELECT queries with joins and sub-queries
 
-## File Requirements
-- SQL file named "studentid_task1.sql"
-- Clearly separate answers to different questions with comments
-- Include function and stored procedure calls with results
-
-## Report Structure
-1. Database Design and Normalization
-   - Explain and justify design decisions
-   - Include database diagram
-   - Document normalization process
-   - State any additional assumptions
-
-2. Implementation of Required Tasks
-   - Answer each numbered question
-   - Include T-SQL statements
-   - Include screenshots of code and results
-   - Explain the results
-
-3. Database Management Considerations
-   - Data integrity and concurrency
-   - Database security
-   - Database backup and recovery
-
-## Assessment Criteria
-- T-SQL statements must be correct, well-written, and concise
-- Include comprehensive commenting
-- Demonstrate excellent grasp of T-SQL
-- Consider concurrency, performance, data integrity, and security
-- Meet all basic requirements and provide additional functionality
-- Use all required database objects effectively
-- Database must be correctly normalized to 3NF
-- Schema should be flexible for future requirements
-- Include database diagram with full explanation
-- Demonstrate knowledge of security, recovery, and transaction management 
+## Implementation Notes
+- Primary SQL script: `code.sql`
+- Organize sections with clear comments
+- Include function and stored procedure calls with results in test sections

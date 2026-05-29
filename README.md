@@ -38,12 +38,12 @@ The database is designed to 3NF (Third Normal Form) with the following normaliza
    - `trg_UpdateSeatStatus`: Automatically updates seat status when a ticket is issued
 
 ## Files Included
-1. **00794412_task1.sql**: Complete SQL implementation of the airport e-boarding system
+1. **code.sql**: Complete SQL implementation of the airport e-boarding system
 2. **airport_eboarding_documentation.md**: Comprehensive documentation of the implementation
 
 ## How to Use
-1. Open SQL Server Management Studio (SSMS)
-2. Open the file `00794412_task1.sql`
+1. Open SQL Server Management Studio (SSMS) or Azure Data Studio
+2. Open the file `code.sql`
 3. Execute the script to create the database and all objects
 4. Run the test queries at the end of the script to verify functionality
 
@@ -61,13 +61,6 @@ The database is designed to 3NF (Third Normal Form) with the following normaliza
 - **Transactions**: Used in stored procedures to ensure data consistency
 - **Error Handling**: Comprehensive error handling in stored procedures
 - **Validation**: Input validation for critical operations
-
-## Report
-The project includes a detailed report (no more than 4,000 words) that covers:
-1. Database design and normalization
-2. Implementation details and explanations
-3. Screenshots of code and execution results
-4. Data integrity, concurrency, security, and backup/recovery considerations
 
 ## Requirements Met
 - Views
@@ -99,12 +92,6 @@ docker-compose up -d
    - Password: YourStrong!Passw0rd
    - Database: <leave blank for now>
 
-
-## Project Documentation
-
-### Additional Files
-- `Advanced Databases Assignment Brief and Marking Criteria.pdf`: Assignment documentation and grading criteria
-- `Writing Frame.pdf`: Template for project documentation
 
 ## Troubleshooting
 

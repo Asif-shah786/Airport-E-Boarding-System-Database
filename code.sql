@@ -1,5 +1,4 @@
--- Task 1: Airport E-Boarding System Database Implementation
--- Student ID: 00794412
+-- Airport E-Boarding System Database Implementation
 
 -- =============================================
 -- 1. Database Creation and Setup
