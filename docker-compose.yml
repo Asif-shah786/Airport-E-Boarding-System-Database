@@ -10,7 +10,6 @@ services:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
-      - ./data:/data
     container_name: sqlserver2019
 
 volumes:

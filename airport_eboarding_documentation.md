@@ -12,6 +12,8 @@
 
 This document provides a comprehensive overview of the Airport E-Boarding System database implementation. The system is designed to manage passenger reservations, ticket issuance, baggage handling, and additional services for an airport's e-boarding operations.
 
+**Runnable script:** [airport_eboarding.sql](airport_eboarding.sql) · **ER diagram:** [database-diagram.png](database-diagram.png) · **Quick start:** [README.md](README.md)
+
 ## Requirements Analysis
 
 ### Functional Requirements

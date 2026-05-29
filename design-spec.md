@@ -1,122 +1,86 @@
-# Airport E-Boarding System Database Requirements
+# Airport E-Boarding — Design Specification
 
-## Database Design Requirements
-1. Design and normalize database to 3NF
-   - Document and justify design decisions
-   - Include database diagram
-   - Explain normalization process
-   - Document any additional assumptions made
+Reference for the domain model and database objects implemented in [airport_eboarding.sql](airport_eboarding.sql).
 
-2. Create tables using T-SQL statements
-   - Clearly identify primary and foreign keys
-   - Justify data types chosen for each column
-   - Implement appropriate constraints for data integrity
-   - Include at least 7 records per table for testing
+## Design goals
 
-## Required Tables
-1. Employees
-   - EmployeeID (PK)
-   - Username
-   - Password
-   - Role (Ticketing Staff/Ticketing Supervisor)
-   - Email
-   - Name
+- Normalize to **3NF** with documented assumptions
+- Enforce integrity with keys, checks, and transactional procedures
+- Support reporting (revenue, occupancy) and day-of-operations queries (meals, baggage)
+- Ship with seed data and runnable tests for local evaluation
 
-2. Passengers
-   - PassengerID (PK)
-   - PNR
-   - Email
-   - Meal Preference (vegetarian/non-vegetarian)
-   - Date of Birth
-   - First Name
-   - Last Name
-   - Emergency Contact (optional)
+## Tables
 
-3. Flights
-   - FlightID (PK)
-   - Flight Number
-   - Departure Time
-   - Arrival Time
-   - Origin
-   - Destination
+### Employees
+- `EmployeeID` (PK), `Username`, `Password`, `Role` (Ticketing Staff / Ticketing Supervisor), `Email`, `Name`
 
-4. Reservations
-   - ReservationID (PK)
-   - PNR
-   - FlightID (FK)
-   - Status (confirmed/pending/cancelled)
-   - Reservation Date
-   - Preferred Seat (nullable)
+### Passengers
+- `PassengerID` (PK), `PNR`, `Email`, `MealPreference` (vegetarian / non-vegetarian), `DateOfBirth`, `FirstName`, `LastName`, `EmergencyContact` (optional)
 
-5. Tickets
-   - TicketID (PK)
-   - ReservationID (FK)
-   - Issue Date
-   - Issue Time
-   - Fare
-   - Seat Number
-   - Class (business/firstclass/economy)
-   - E-Boarding Number
-   - EmployeeID (FK)
+### Flights
+- `FlightID` (PK), `FlightNumber`, `DepartureTime`, `ArrivalTime`, `Origin`, `Destination`
 
-6. Baggage
-   - BaggageID (PK)
-   - TicketID (FK)
-   - Weight
-   - Status (checkedin/loaded)
-   - Baggage Fee
+### Reservations
+- `ReservationID` (PK), `PNR`, `FlightID` (FK), `Status` (confirmed / pending / cancelled), `ReservationDate`, `PreferredSeat` (nullable)
 
-7. Additional Services
-   - ServiceID (PK)
-   - TicketID (FK)
-   - Service Type (extra baggage/upgraded meal/preferred seat)
-   - Fee
+### Tickets
+- `TicketID` (PK), `ReservationID` (FK), `IssueDate`, `IssueTime`, `Fare`, `SeatNumber`, `Class` (business / firstclass / economy), `EBoardingNumber`, `EmployeeID` (FK)
 
-## Required Constraints
-1. Reservation date must not be in the past
+### Baggage
+- `BaggageID` (PK), `TicketID` (FK), `Weight`, `Status` (checkedin / loaded), `BaggageFee`
 
-## Required Queries
-1. Identify Passengers with Pending Reservations and age > 40 years
+### Additional Services
+- `ServiceID` (PK), `TicketID` (FK), `ServiceType` (extra baggage / upgraded meal / preferred seat), `Fee`
 
-## Required Database Objects
+## Business rules
 
-### Stored Procedures
-1. Search passengers by last name
-   - Sort by most recent issued ticket first
+- Reservation date must not be in the past
+- Sample data: at least seven rows per table in `airport_eboarding.sql`
 
-2. List business class passengers with meal requirements for current day
+## Queries
 
-3. Insert a new employee
+- Passengers with **pending** reservations and age **> 40** (join across `Passengers`, `Reservations`, `Flights`)
 
-4. Update details for a passenger who has booked a flight before
+## Database objects
+
+### Stored procedures
+| Procedure | Behavior |
+|-----------|----------|
+| Search by last name | Sort by most recently issued ticket |
+| Business class today | Meal requirements for current day |
+| Insert employee | Validated insert |
+| Update passenger | Only if passenger has booked before |
+| Travel history | Full history by PNR |
 
 ### Views
-1. Employee Revenue View
-   - Show e-boarding numbers issued by specific employee
-   - Include overall revenue (fare + additional services)
-   - Include details of fare, baggage fees, upgraded meal, preferred seat
+| View | Behavior |
+|------|----------|
+| Employee revenue | E-boarding numbers per employee; fare + services + baggage/meal/seat breakdown |
+| Flight occupancy | Occupancy and revenue per flight |
 
 ### Functions
-1. Calculate total checked-in baggage for specific flight and date
+- Total **checked-in** baggage for a given flight and date
 
 ### Triggers
-1. Automatic seat status update when ticket is issued
+- Update seat status when a ticket is issued
 
-## Additional Requirements
-- Provide at least 2 additional useful database objects (views, stored procedures, functions, or triggers)
-- Document operational guidance for:
-  - Data integrity and concurrency
-  - Database security
-  - Database backup and recovery
+### Additional objects
+- Extra view, procedure, or function beyond the core set (see script comments)
 
-## Required SQL Elements
-- Views
-- Stored procedures
-- System functions and user-defined functions
-- Triggers
-- SELECT queries with joins and sub-queries
+## SQL surface area
 
-## Implementation Notes
-- Primary SQL script: `code.sql`
-- Organize sections with clear comments
-- Include function and stored procedure calls with results in test sections
+- Views, stored procedures, system and user-defined functions, triggers
+- `SELECT` with joins and subqueries; procedure/function calls with sample output in the test section
+
+## Operations (documented in depth)
+
+See [airport_eboarding_documentation.md](airport_eboarding_documentation.md) for:
+
+- Data integrity and concurrency
+- Database security
+- Backup and recovery
+
+## Implementation
+
+- **Script:** [airport_eboarding.sql](airport_eboarding.sql)
+- **Diagram:** [database-diagram.png](database-diagram.png)

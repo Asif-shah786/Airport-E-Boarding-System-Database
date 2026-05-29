@@ -1,131 +1,107 @@
-# Airport E-Boarding System Database Implementation
+# Airport E-Boarding System (SQL Server)
 
-## Project Overview
-This project implements a comprehensive database system for an airport e-boarding system. The database is designed to manage passenger information, flight details, reservations, tickets, baggage, and additional services. The implementation follows database design best practices and includes all required components such as views, stored procedures, functions, triggers, and complex queries.
+End-to-end relational database for airport e-boarding: passengers, flights, reservations, ticketing, baggage, and add-on services. Schema is normalized to **3NF**, with production-style T-SQL objects (views, stored procedures, functions, triggers) and a **Docker** setup so reviewers can run it locally in minutes.
 
+## At a glance
 
-## Database Structure
-The database is designed to 3NF (Third Normal Form) with the following normalization approach:
-1. **First Normal Form (1NF)**: All tables have a primary key and no repeating groups
-2. **Second Normal Form (2NF)**: All non-key attributes are fully dependent on the primary key
-3. **Third Normal Form (3NF)**: No transitive dependencies exist
+| | |
+|---|---|
+| **Problem** | Model and implement persistent data for airport check-in: who is flying, on which flight, with what ticket, baggage, and extras. |
+| **Approach** | Entity-relationship design → 3NF tables → constraints and transactional procedures → reporting views and operational triggers. |
+| **Stack** | Microsoft SQL Server 2019, T-SQL, Docker Compose, Azure Data Studio / SSMS |
 
-### Tables
-1. **Employees**: Stores employee information (ID, username, password, role, email, name)
-2. **Passengers**: Stores passenger details (ID, PNR, email, meal preference, DOB, name, emergency contact)
-3. **Flights**: Contains flight information (ID, flight number, departure/arrival times, origin, destination)
-4. **Reservations**: Links passengers to flights (ID, PNR, flight ID, status, date, preferred seat)
-5. **Tickets**: Stores ticket information (ID, reservation ID, issue date/time, fare, seat, class, e-boarding number)
-6. **Baggage**: Contains baggage details (ID, ticket ID, weight, status, fee)
-7. **AdditionalServices**: Stores additional services purchased (ID, ticket ID, service type, fee)
+![Entity-relationship diagram](database-diagram.png)
 
-### Database Objects
-1. **Views**:
-   - `vw_EmployeeRevenue`: Shows e-boarding numbers issued by specific employees and includes overall revenue
-   - `vw_FlightOccupancy`: Provides information about flight occupancy and revenue
+## What this demonstrates
 
-2. **Stored Procedures**:
-   - `sp_SearchPassengersByLastName`: Searches for passengers by last name
-   - `sp_ListBusinessClassPassengersToday`: Lists business class passengers with meal preferences for today
-   - `sp_InsertNewEmployee`: Inserts a new employee with validation
-   - `sp_UpdatePassengerDetails`: Updates passenger details
-   - `sp_GetPassengerTravelHistory`: Retrieves complete travel history for a passenger
+- **Data modeling:** Seven related tables, PK/FK relationships, check constraints (e.g. reservation date not in the past).
+- **Normalization:** Documented 1NF → 2NF → 3NF design; no redundant passenger/flight data on tickets.
+- **T-SQL depth:** Views, stored procedures (search, inserts, updates, reporting), scalar/table functions, triggers.
+- **Integrity:** `TRY/CATCH`, transactions in procedures, validation before writes.
+- **Queries:** Joins and subqueries (e.g. pending reservations for passengers over 40).
+- **Ops awareness:** Notes on concurrency, security, and backup in [airport_eboarding_documentation.md](airport_eboarding_documentation.md).
 
-3. **Functions**:
-   - `fn_CalculateCheckedInBaggage`: Calculates total checked-in baggage for a specific flight and date
+## Quick start
 
-4. **Triggers**:
-   - `trg_UpdateSeatStatus`: Automatically updates seat status when a ticket is issued
+**Prerequisites:** [Docker Desktop](https://www.docker.com/products/docker-desktop/), [Azure Data Studio](https://azure.microsoft.com/products/data-studio/) or SSMS.
 
-## Files Included
-1. **code.sql**: Complete SQL implementation of the airport e-boarding system
-2. **airport_eboarding_documentation.md**: Comprehensive documentation of the implementation
-
-## How to Use
-1. Open SQL Server Management Studio (SSMS) or Azure Data Studio
-2. Open the file `code.sql`
-3. Execute the script to create the database and all objects
-4. Run the test queries at the end of the script to verify functionality
-
-## Features
-- **Passenger Management**: Search, update, and track passenger information
-- **Flight Management**: Track flight details and occupancy
-- **Reservation System**: Manage flight reservations with status tracking
-- **Ticket Issuance**: Issue tickets with e-boarding numbers
-- **Baggage Management**: Track baggage status and fees
-- **Additional Services**: Manage extra services like preferred seats and upgraded meals
-- **Employee Management**: Add and manage employee accounts
-
-## Data Integrity and Security
-- **Constraints**: Primary keys, foreign keys, and check constraints ensure data integrity
-- **Transactions**: Used in stored procedures to ensure data consistency
-- **Error Handling**: Comprehensive error handling in stored procedures
-- **Validation**: Input validation for critical operations
-
-## Requirements Met
-- Views
-- Stored procedures
-- System functions and user-defined functions
-- Triggers
-- SELECT queries with joins and sub-queries
-- All functions and stored procedures are defined, called, and results shown
-
-## Setup Instructions
-
-### 1. Start SQL Server Container
 ```bash
-# Navigate to the project directory
-cd /path/to/project
-
-# Start the SQL Server container
-docker-compose up -d
+git clone https://github.com/Asif-shah786/airport-eboarding-database.git
+cd airport-eboarding-database
+docker compose up -d
 ```
 
-### 2. Connect with Azure Data Studio
-1. Open Azure Data Studio
-2. Click "New Connection"
-3. Enter these details:
-   - Connection Type: Microsoft SQL Server
-   - Server: localhost,1433
-   - Authentication Type: SQL Login
-   - User name: sa
-   - Password: YourStrong!Passw0rd
-   - Database: <leave blank for now>
+Wait ~20–30 seconds for SQL Server to accept connections, then connect:
 
+| Setting | Value |
+|---------|--------|
+| Server | `localhost,1433` |
+| Authentication | SQL Login |
+| User | `sa` |
+| Password | `YourStrong!Passw0rd` *(local dev only)* |
+
+Open and run **[airport_eboarding.sql](airport_eboarding.sql)**. It drops/recreates `AirportEBoarding`, creates all objects, seeds sample data, and runs test calls at the end.
+
+## Repository layout
+
+| File | Purpose |
+|------|---------|
+| [airport_eboarding.sql](airport_eboarding.sql) | Full database script (schema, data, objects, tests) |
+| [airport_eboarding_documentation.md](airport_eboarding_documentation.md) | Design rationale, implementation walkthrough, security/backup notes |
+| [design-spec.md](design-spec.md) | Domain model and object inventory |
+| [database-diagram.png](database-diagram.png) | ER diagram |
+| [docker-compose.yml](docker-compose.yml) | SQL Server 2019 container |
+
+## Schema overview
+
+**Tables:** `Employees`, `Passengers`, `Flights`, `Reservations`, `Tickets`, `Baggage`, `AdditionalServices`
+
+**Highlighted objects**
+
+| Type | Name | Role |
+|------|------|------|
+| View | `vw_EmployeeRevenue` | Revenue and e-boarding numbers per employee |
+| View | `vw_FlightOccupancy` | Seat usage and flight revenue |
+| Procedure | `sp_SearchPassengersByLastName` | Passenger lookup, newest ticket first |
+| Procedure | `sp_ListBusinessClassPassengersToday` | Today’s business passengers and meal prefs |
+| Procedure | `sp_InsertNewEmployee` / `sp_UpdatePassengerDetails` | Validated writes |
+| Procedure | `sp_GetPassengerTravelHistory` | Full travel history by PNR |
+| Function | `fn_CalculateCheckedInBaggage` | Checked-in baggage by flight and date |
+| Trigger | `trg_UpdateSeatStatus` | Seat status when a ticket is issued |
+
+## Capabilities
+
+- Passenger, flight, reservation, and ticket lifecycle
+- E-boarding numbers, fares, seat classes, baggage fees
+- Extra services (preferred seat, upgraded meal, extra baggage)
+- Employee-linked ticket issuance and revenue reporting
+- Sample dataset and executable tests at the bottom of `airport_eboarding.sql`
 
 ## Troubleshooting
 
-### Common Issues
+**Cannot connect**
 
-1. **Cannot Connect to SQL Server**
-   - Ensure Docker Desktop is running
-   - Check if container is running: `docker ps`
-   - Verify port 1433 is not in use
+- Confirm Docker is running: `docker ps` (container `sqlserver2019` should be up).
+- Port `1433` must be free on your machine.
 
-2. **Data Import Fails**
-   - Check if CSV files are in the correct location
-   - Verify file permissions
-   - Ensure CSV files match the expected format
+**Script fails on re-run**
 
-3. **Database Already Exists**
-   - Run `00_drop_db.sql` first
-   - Check for active connections
-   - Restart SQL Server container if needed
+- `airport_eboarding.sql` drops `AirportEBoarding` if it exists, then recreates it. Re-run the full script rather than partial sections.
 
-### Reset Database
-To completely reset the database:
+**Reset environment**
+
 ```bash
-# Stop and remove containers
-docker-compose down
-
-# Remove volumes
-docker volume rm $(docker volume ls -q)
-
-# Start fresh
-docker-compose up -d
+docker compose down -v
+docker compose up -d
 ```
-## Notes
-- All scripts use GO statements to separate batches
-- CSV files must be in the correct location as specified in docker-compose.yml
-- Make sure to run scripts in the correct order
-- Backup your data before running drop scripts 
+
+Then run `airport_eboarding.sql` again.
+
+## Further reading
+
+- [airport_eboarding_documentation.md](airport_eboarding_documentation.md) — normalization, object-by-object explanation, testing, recommendations.
+- [design-spec.md](design-spec.md) — tables, constraints, and required behaviors in one place.
+
+## License
+
+[MIT](LICENSE)
