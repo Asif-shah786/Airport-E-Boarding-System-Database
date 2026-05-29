@@ -3,10 +3,6 @@
 ## Project Overview
 This project implements a comprehensive database system for an airport e-boarding system. The database is designed to manage passenger information, flight details, reservations, tickets, baggage, and additional services. The implementation follows database design best practices and includes all required components such as views, stored procedures, functions, triggers, and complex queries.
 
-## Student Information
-- **Student ID**: 00794412
-- **Course**: Advanced Databases
-- **Assessment**: Task 1
 
 ## Database Structure
 The database is designed to 3NF (Third Normal Form) with the following normalization approach:
