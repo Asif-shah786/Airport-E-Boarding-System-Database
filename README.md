@@ -1,4 +1,4 @@
-# Airport E-Boarding System (SQL Server)
+# Airport E-Boarding Database
 
 End-to-end relational database for airport e-boarding: passengers, flights, reservations, ticketing, baggage, and add-on services. Schema is normalized to **3NF**, with production-style T-SQL objects (views, stored procedures, functions, triggers) and a **Docker** setup so reviewers can run it locally in minutes.
 
